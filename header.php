@@ -39,7 +39,7 @@ $stmt->close();
         <p class="mb-0">
           Also check out the admin panel
         </p>
-        <a href="<?= $Base_Url ?>/admin">Click Here</a>
+        <a href="'.$Base_Url .'/admin">Click Here</a>
       </div>
       <div class="d-flex gap-2 align-items-center">
         <p class="mb-0">My Profile</p>
@@ -78,9 +78,9 @@ $stmt->close();
       </div>';
       }
       ?>
-      <!-- <a href="./signout.php">LOG OUT</a> -->
+        <!-- <a href="./signout.php">LOG OUT</a> -->
 
-    </div>
+      </div>
     </div>
   </section>
   <div class="container ">

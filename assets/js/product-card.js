@@ -1,6 +1,6 @@
-import {addToCart} from "./addToCart.js";
-import {addTowishlist} from "./addToWishlist.js";
-import {quantityToggle} from "./quantity-manipulation.js";
+import { addToCart } from "./addToCart.js";
+import { addTowishlist } from "./addToWishlist.js";
+import { quantityToggle } from "./quantity-manipulation.js";
 
 const productContainer = document.querySelector("#product-container");
 const productTemplate = document.querySelector("#product-template");
@@ -47,6 +47,7 @@ export const showProductCard = (products) => {
     const cardElement = productClone.querySelector("#card-value");
     cardElement.setAttribute("id", `card-${id}`);
     cardElement.setAttribute("data-product-id", id);
+    cardElement.setAttribute("data-category", category);
     productClone.querySelector(".product-name").textContent = name;
     productClone.querySelector(".category").textContent = category;
     productClone.querySelector(".color").textContent = color;

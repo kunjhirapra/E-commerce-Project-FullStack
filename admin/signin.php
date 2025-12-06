@@ -329,7 +329,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
         <div style="text-align: right; margin-bottom: 0.5rem;">
-          <a href="forgot-password.php" style="font-size: 0.85rem; color: #ee0979; text-decoration: none; font-weight: 500;">Forgot password?</a>
+          <a href="forgot-password.php"
+            style="font-size: 0.85rem; color: #ee0979; text-decoration: none; font-weight: 500;">Forgot password?</a>
         </div>
 
         <button type="submit" class="submit-btn">Sign In to Dashboard</button>
