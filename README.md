@@ -262,190 +262,69 @@ For production deployment instructions, see [`DEPLOYMENT_CHECKLIST.md`](DEPLOYME
 
 ## 📁 Project Structure
 
-### **Root Directory**
-
 ```
 kunj-ecommerce-website/
 │
-├── 📄 config.php                    # Centralized configuration file
-├── 📄 conn.php                      # Database connection file
+├── 📄 *.php                         # Core application pages
+│   ├── config.php & conn.php        # Configuration & database connection
+│   ├── index.php                    # Homepage
+│   ├── product.php, show-product.php # Product pages
+│   ├── checkout.php, add-to-cart.php # Shopping & checkout
+│   ├── signin.php, signup.php       # Authentication
+│   ├── my-*.php                     # User dashboard pages
+│   ├── return-*.php                 # Order return system
+│   └── header/footer components     # Reusable UI components
 │
-├── 🏠 index.php                     # Homepage with hero section
-├── 📦 product.php                   # Product listing page
-├── 🛍️ show-product.php              # Individual product details
-├── 📋 product-content.php           # Product grid/cards component
+├── 📁 admin/                        # � Admin Panel
+│   ├── *.php                        # Admin pages (dashboard, products, orders, users, coupons)
+│   └── � assets/
+│       ├── 📁 api/                  # Admin API endpoints
+│       ├── 📁 css/                  # Admin styles
+│       ├── 📁 js/                   # Admin JavaScript
+│       └── 📁 images/               # Admin uploads & resources
 │
-├── 🛒 add-to-cart.php               # Cart management page
-├── ❤️ add-to-wishlist.php           # Wishlist page
-├── 💳 checkout.php                  # Checkout process
-├── ✅ order-confirmation.php        # Order success page
-│
-├── 👤 signin.php                    # User login
-├── 📝 signup.php                    # User registration
-├── 🚪 signout.php                   # Logout handler
-│
-├── 📊 my-dashboard.php              # User dashboard
-├── 📦 my-orders.php                 # Order history
-├── 🔍 view-your-order.php           # Order details view
-├── 🔄 return-your-order.php         # Return orders listing
-├── 📤 return_order_item.php         # Return request form
-│
-├── 🏠 my-address.php                # Manage shipping addresses
-├── ⚙️ my-account-details.php        # Update profile
-│
-├── ℹ️ about.php                     # About page
-├── 📧 contact.php                   # Contact page
-│
-├── 🎨 header.php                    # Page header component
-├── 🎨 footer.php                    # Page footer component
-├── 🎨 main-header.php               # Main navigation header
-├── 🎨 main-footer.php               # Main site footer
-│
-├── 📖 README.md                     # Project documentation (this file)
-├── 📋 DEPLOYMENT_CHECKLIST.md       # Deployment guide
-│
-├── 📁 admin/                        # Admin panel directory
-└── 📁 assets/                       # Public assets directory
-```
-
-### **Admin Panel Structure** (`admin/`)
-
-```
-admin/
-│
-├── 🏠 dashboard.php                 # Admin dashboard with statistics
-├── 👥 users-page.php                # User management
-├── 📦 add-product.php               # Add/list products
-├── ✏️ edit-product.php              # Edit product details
-├── 📋 orders-listing.php            # All orders listing
-├── 🔍 view-order.php                # Order details
-├── ✏️ edit-order.php                # Edit order status
-├── 🎟️ coupons.php                   # Coupon management
-│
-├── 🔐 signin.php                    # Admin login
-├── 📝 signup.php                    # Admin registration
-├── 🚪 signout.php                   # Admin logout
-│
-├── 🎨 main-header.php               # Admin header component
-├── 🎨 main-footer.php               # Admin footer component
-│
-├── 🔌 fetch_products.php            # Fetch products AJAX
-├── 🌐 index.php                     # Admin entry point
-│
-└── 📁 assets/                       # Admin assets
-    ├── 📁 api/                      # Admin API endpoints
-    ├── 📁 css/                      # Admin stylesheets
-    ├── 📁 js/                       # Admin JavaScript
-    ├── 📁 images/                   # Admin images/uploads
-    └── 📁 webfonts/                 # Font files
-```
-
-### **Customer Assets Structure** (`assets/`)
-
-```
-assets/
-│
-├── 📁 api/                          # Backend API endpoints
-│   ├── add_to_cart.php              # Add to cart API
-│   ├── add_to_cart_product.php      # Cart product handler
-│   ├── add_to_wishlist.php          # Wishlist API
-│   ├── fetchAllProducts.php         # Get products
-│   ├── getFromCart.php              # Retrieve cart items
-│   ├── getFromWishlist.php          # Retrieve wishlist items
-│   ├── move_to_cart.php             # Move wishlist to cart
-│   ├── remove_product.php           # Remove from cart
-│   ├── remove_wishlist_product.php  # Remove from wishlist
-│   ├── checkoutFilteredProducts.php # Checkout data
-│   ├── getCheckoutProductId.php     # Checkout product IDs
-│   ├── coupon_data.php              # Coupon validation
-│   ├── remove_coupon.php            # Remove coupon
-│   ├── returnOrder.php              # Order return handler
-│   ├── update_address.php           # Update user address
-│   ├── update_user_details.php      # Update profile
-│   ├── update_data.php              # General update handler
-│   ├── userDetails.php              # Fetch user data
-│   └── api.php                      # Main API router
-│
-├── 📁 css/                          # Stylesheets
-│   ├── bootstrap.min.css            # Bootstrap framework
-│   ├── all.min.css                  # Font Awesome
-│   ├── owl.carousel.min.css         # Carousel styles
-│   ├── style.css                    # Custom styles
-│   └── responsive.css               # Responsive design
-│
-├── 📁 js/                           # JavaScript modules
-│   ├── jquery.js                    # jQuery library
-│   ├── bootstrap.bundle.min.js      # Bootstrap JS
-│   ├── owl.carousel.min.js          # Carousel plugin
-│   ├── jqueryValidate.js            # Form validation
+├── 📁 assets/                       # 🎨 Customer-Facing Assets
+│   ├── 📁 api/                      # Backend API endpoints
+│   │   ├── Cart & Wishlist APIs
+│   │   ├── Product & Checkout APIs
+│   │   ├── User & Order APIs
+│   │   └── Coupon & Return APIs
 │   │
-│   ├── addToCart.js                 # Cart functionality
-│   ├── addToWishlist.js             # Wishlist functionality
-│   ├── showAddToCart.js             # Display cart
-│   ├── showWishlist.js              # Display wishlist
-│   ├── cartValue.js                 # Cart calculations
-│   ├── updateCartValue.js           # Update cart totals
+│   ├── 📁 css/                      # Stylesheets
+│   │   ├── bootstrap.min.css
+│   │   ├── style.css
+│   │   └── responsive.css
 │   │
-│   ├── showProduct.js               # Product display
-│   ├── product-card.js              # Product card component
-│   ├── filterProductListing.js      # Product filters
-│   ├── pagination+filter.js         # Pagination logic
+│   ├── 📁 js/                       # JavaScript Modules
+│   │   ├── Cart & Wishlist logic
+│   │   ├── Product display & filters
+│   │   ├── Form validation
+│   │   ├── Order & return management
+│   │   └── Utility functions
 │   │
-│   ├── formValidation.js            # Form validation
-│   ├── formdata.js                  # Form data handling
-│   ├── quantity-manipulation.js     # Quantity controls
+│   ├── 📁 images/                   # Images & Graphics
+│   │   ├── 📁 icons/                # Icon assets
+│   │   ├── 📁 resources/            # Static images
+│   │   ├── 📁 uploads/              # Product images
+│   │   └── 📁 user-sign-up-uploads/ # User avatars
 │   │
-│   ├── returnOrder.js               # Return order logic
-│   ├── returnMyOrderDetails.js      # Return details
-│   ├── viewMyOrderDetails.js        # Order details view
-│   │
-│   ├── showToast.js                 # Toast notifications
-│   ├── showConfirmation.js          # Confirmation dialogs
-│   ├── getFromLocal.js              # Local storage utils
-│   ├── getWishlist.js               # Wishlist retrieval
-│   ├── compare.js                   # Product comparison
-│   ├── uploadImg.js                 # Image upload
-│   └── script.js                    # Main JS file
+│   └── 📁 webfonts/                 # Font files (Font Awesome)
 │
-├── 📁 images/                       # Images and graphics
-│   ├── heroSection.svg              # Hero graphics
-│   ├── wavesOpacity.svg             # Design elements
-│   ├── 📁 icons/                    # Icon files
-│   ├── 📁 resources/                # Static images
-│   ├── 📁 uploads/                  # Product uploads
-│   └── 📁 user-sign-up-uploads/     # User profile pictures
-│
-└── 📁 webfonts/                     # Font Awesome fonts
-    ├── fa-brands-400.woff2
-    ├── fa-regular-400.woff2
-    ├── fa-solid-900.woff2
-    └── fa-v4compatibility.woff2
+├── 📖 README.md                     # Project documentation
+└── 📋 DEPLOYMENT_CHECKLIST.md       # Deployment guide
 ```
 
-### **Admin API Endpoints** (`admin/assets/api/`)
+### **Key Directories Explained**
 
-```
-admin/assets/api/
-│
-├── api.php                          # Main admin API router
-├── coupon_data.php                  # Coupon CRUD operations
-│
-├── fetchProduct.php                 # Get products list
-├── productValidation.php            # Validate product data
-├── updateProduct.php                # Update product
-├── updateProductState.php           # Toggle product status
-├── deleteProduct.php                # Remove product
-│
-├── orderList.php                    # Get all orders
-├── viewOrder.php                    # Get order details
-├── viewUserOrder.php                # Get user-specific order
-├── update_order_data.php            # Update order status
-├── delete_order_item.php            # Remove order item
-├── delete-order.php                 # Delete entire order
-├── save_order.php                   # Create new order
-│
-└── getDashboardData.php             # Dashboard statistics
-```
+| Directory          | Purpose                                                             |
+| ------------------ | ------------------------------------------------------------------- |
+| **Root (/)**       | Main customer-facing PHP pages and application logic                |
+| **admin/**         | Complete admin panel with product, order, user & coupon management  |
+| **assets/api/**    | RESTful API endpoints for cart, wishlist, checkout, orders, returns |
+| **assets/css/**    | Bootstrap framework + custom responsive styles                      |
+| **assets/js/**     | Modular JavaScript for dynamic features (cart, filters, validation) |
+| **assets/images/** | Product uploads, user avatars, icons, and static resources          |
+| **admin/assets/**  | Separate asset structure for admin panel functionality              |
 
 ---
 
