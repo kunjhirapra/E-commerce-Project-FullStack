@@ -1,0 +1,11 @@
+# Redirect anyone accessing the admin folder directly to signin.php
+DirectoryIndex signin.php
+
+# Prevent directory listing
+Options -Indexes
+
+# Additional security: block access to sensitive files
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|inc|bak)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
