@@ -1,11 +1,14 @@
 <?php
-session_id("sessionadmin");
-session_start();
+// Include security helper
+require_once '../includes/security.php';
+
+// Initialize secure session for admin
+Security::init_secure_session('ADMIN_SESSION');
 
 // Check if admin is already signed in
 if (isset($_SESSION['admin_email']) && isset($_SESSION['admin_logged_in'])) {
     // Check if session is still valid (not expired)
-    if (isset($_SESSION['admin_last_signin_time']) && (time() - $_SESSION['admin_last_signin_time']) <= 10000) {
+    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) <= 1800) {
         // User is already logged in, redirect to dashboard
         header("Location: dashboard.php");
         exit();
@@ -116,7 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $roleData = $roleResult->fetch_assoc();
         $role_id = $roleData['id'];
 
-        $hashed_password = md5($password);
+        // Use modern password hashing (bcrypt or Argon2)
+        $hashed_password = Security::hash_password($password);
 
         $stmt = $conn->prepare("INSERT INTO admin_sign_in (email, password, username, user_img, role_id) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssi", $email, $hashed_password, $userName, $Upload, $role_id);

@@ -1,11 +1,14 @@
 <?php 
-    session_id("sessionuser");
-  session_start();
+// Include security helper
+require_once 'includes/security.php';
+
+// Initialize secure session
+Security::init_secure_session('USER_SESSION');
   
   // Check if user is already signed in
   if (isset($_SESSION['email']) && isset($_SESSION['userLogId'])) {
     // Check if session is still valid (not expired)
-    if (isset($_SESSION['last_signin_time']) && (time() - $_SESSION['last_signin_time']) <= 10000) {
+    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) <= 1800) {
       // User is already logged in, redirect to home page
       header("Location: my-dashboard.php");
       exit();
@@ -104,7 +107,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
       $stmt->close();
       if ($emailErr === "" && $passwordErr === "" && $userNameErr === "" && count($UploadErr) === 0) {
-        $hashed_password = md5($password);
+        // Use modern password hashing (bcrypt or Argon2)
+        $hashed_password = Security::hash_password($password);
         $stmt = $conn->prepare("INSERT INTO user_sign_in(email, password, username, user_img) VALUES (?, ?, ?,?)");
         $stmt->bind_param("ssss", $email, $hashed_password, $userName, $Upload);
 

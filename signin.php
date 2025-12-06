@@ -1,11 +1,14 @@
 <?php 
-  session_id("sessionuser");
-  session_start();
+// Include security helper
+require_once 'includes/security.php';
+
+// Initialize secure session
+Security::init_secure_session('USER_SESSION');
   
   // Check if user is already signed in
   if (isset($_SESSION['email']) && isset($_SESSION['userLogId'])) {
     // Check if session is still valid (not expired)
-    if (isset($_SESSION['last_signin_time']) && (time() - $_SESSION['last_signin_time']) <= 10000) {
+    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) <= 1800) {
       // User is already logged in, redirect to home page
       header("Location: my-dashboard.php");
       exit();
@@ -27,15 +30,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $stmt->bind_result($db_password, $userLogId);
       $stmt->fetch();
 
-      if (md5($password) === $db_password) {
-        $_SESSION['email'] = $email;
-        $_SESSION['userLogId'] = $userLogId;
-        $_SESSION['last_signin_time'] = time();
+      // Check if password is MD5 (legacy) and verify/upgrade
+      if (strlen($db_password) === 32 && ctype_xdigit($db_password)) {
+        // Legacy MD5 password - verify and upgrade
+        if (md5($password) === $db_password) {
+          // Password correct - upgrade to modern hash
+          $stmt->close();
+          $new_hash = Security::hash_password($password);
+          $update_stmt = $conn->prepare("UPDATE user_sign_in SET password = ? WHERE email = ?");
+          $update_stmt->bind_param("ss", $new_hash, $email);
+          $update_stmt->execute();
+          $update_stmt->close();
+          
+          // Set session variables and mark as logged in
+          $_SESSION['email'] = $email;
+          $_SESSION['userLogId'] = $userLogId;
+          $_SESSION['last_activity'] = time();
+          $_SESSION['login_success'] = true;
+        } else {
+          $passwordErr = "Invalid email or password.";
+        }
+      } else {
+        // Modern password hash - use password_verify()
+        if (Security::verify_password($password, $db_password)) {
+          $stmt->close();
+          
+          // Check if hash needs upgrading (algorithm improved)
+          if (Security::needs_rehash($db_password)) {
+            $new_hash = Security::hash_password($password);
+            $update_stmt = $conn->prepare("UPDATE user_sign_in SET password = ? WHERE email = ?");
+            $update_stmt->bind_param("ss", $new_hash, $email);
+            $update_stmt->execute();
+            $update_stmt->close();
+          }
+          
+          // Set session variables and mark as logged in
+          $_SESSION['email'] = $email;
+          $_SESSION['userLogId'] = $userLogId;
+          $_SESSION['last_activity'] = time();
+          $_SESSION['login_success'] = true;
+        } else {
+          $passwordErr = "Incorrect password";
+        }
+      }
+      
+      // If login was successful, handle cart and redirect
+      if (isset($_SESSION['login_success'])) {
+        unset($_SESSION['login_success']);
         ?>
 <script>
 const cartItem = localStorage.getItem("cartProducts");
 localStorage.removeItem("cartProducts")
-console.log("cartItem" + cartItem);
+console.log("cartItem: " + cartItem);
 if (cartItem) {
   const cartArray = JSON.parse(cartItem);
 
@@ -62,10 +108,8 @@ setTimeout(() => {
   window.location.href = "index.php";
 }, 50);
 </script>
-<?=
-        exit(); 
-      } else {
-        $passwordErr = "Incorrect password";
+<?php
+        exit();
       }
     } else {
       $emailErr = "Email not found";

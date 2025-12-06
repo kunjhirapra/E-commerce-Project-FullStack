@@ -1,11 +1,14 @@
 <?php
-session_id("sessionadmin");
-session_start();
+// Include security helper
+require_once '../includes/security.php';
+
+// Initialize secure session for admin
+Security::init_secure_session('ADMIN_SESSION');
 
 // Check if admin is already signed in
 if (isset($_SESSION['admin_email']) && isset($_SESSION['admin_logged_in'])) {
     // Check if session is still valid (not expired)
-    if (isset($_SESSION['admin_last_signin_time']) && (time() - $_SESSION['admin_last_signin_time']) <= 10000) {
+    if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) <= 1800) {
         // User is already logged in, redirect to dashboard
         header("Location: dashboard.php");
         exit();
@@ -33,20 +36,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bind_result($db_password, $role_name);
         $stmt->fetch();
 
-        if (md5($password) === $db_password) {
-            $_SESSION['admin_email'] = $email;
-            $_SESSION['admin_logged_in'] = $email;
-            $_SESSION['admin_role'] = $role_name;
-            $_SESSION['admin_last_signin_time'] = time();
+        // Check if password is MD5 (legacy) and verify/upgrade
+        if (strlen($db_password) === 32 && ctype_xdigit($db_password)) {
+            // Legacy MD5 password - verify and upgrade
+            if (md5($password) === $db_password) {
+                // Password correct - upgrade to modern hash
+                $stmt->close();
+                $new_hash = Security::hash_password($password);
+                $update_stmt = $conn->prepare("UPDATE admin_sign_in SET password = ? WHERE email = ?");
+                $update_stmt->bind_param("ss", $new_hash, $email);
+                $update_stmt->execute();
+                $update_stmt->close();
+                
+                // Set session variables
+                $_SESSION['admin_email'] = $email;
+                $_SESSION['admin_logged_in'] = $email;
+                $_SESSION['admin_role'] = $role_name;
+                $_SESSION['last_activity'] = time();
 
-            if ($role_name === 'admin') {
-              header("Location: dashboard.php");
-            }else{
-              header("Location: login.php");
+                if ($role_name === 'admin') {
+                  header("Location: dashboard.php");
+                }else{
+                  header("Location: login.php");
+                }
+                exit();
+            } else {
+                $passwordErr = "Invalid email or password.";
             }
-            exit();
         } else {
-            $passwordErr = "Incorrect password";
+            // Modern password hash - use password_verify()
+            if (Security::verify_password($password, $db_password)) {
+                $stmt->close();
+                
+                // Check if hash needs upgrading (algorithm improved)
+                if (Security::needs_rehash($db_password)) {
+                    $new_hash = Security::hash_password($password);
+                    $update_stmt = $conn->prepare("UPDATE admin_sign_in SET password = ? WHERE email = ?");
+                    $update_stmt->bind_param("ss", $new_hash, $email);
+                    $update_stmt->execute();
+                    $update_stmt->close();
+                }
+                
+                // Set session variables
+                $_SESSION['admin_email'] = $email;
+                $_SESSION['admin_logged_in'] = $email;
+                $_SESSION['admin_role'] = $role_name;
+                $_SESSION['last_activity'] = time();
+
+                if ($role_name === 'admin') {
+                  header("Location: dashboard.php");
+                }else{
+                  header("Location: login.php");
+                }
+                exit();
+            } else {
+                $passwordErr = "Incorrect password";
+            }
         }
     } else {
         $emailErr = "Email not found";
