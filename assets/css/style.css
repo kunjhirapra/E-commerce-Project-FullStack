@@ -1232,6 +1232,10 @@ form .form-floating > .form-control:not(:placeholder-shown) ~ label::after {
 .sidebar {
   height: auto;
 }
+
+#compareButton {
+  z-index: 1;
+}
 .compare-btn,
 .wish-btn {
   display: flex;
@@ -1272,6 +1276,8 @@ form .form-floating > .form-control:not(:placeholder-shown) ~ label::after {
   border-radius: 12px;
   transition: all 0.3s ease;
   overflow: hidden;
+  max-width: 450px;
+  margin: 0 auto;
 }
 
 .compare-product-card:hover {
@@ -1289,8 +1295,8 @@ form .form-floating > .form-control:not(:placeholder-shown) ~ label::after {
   font-weight: 600;
   color: #2c3e50;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  --webkit-line-clamp: 2;
+  --webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }

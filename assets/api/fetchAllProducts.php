@@ -8,7 +8,7 @@ if (!$conn) {
   exit;
 }
 
-$sql = "SELECT * FROM total_products tp WHERE tp.is_active = 1  AND is_deleted IS NULL";
+$sql = "SELECT tp.*, c.name AS category FROM total_products tp LEFT JOIN categories c ON tp.category_id = c.id WHERE tp.is_active = 1 AND tp.is_deleted IS NULL;";
 $result = mysqli_query($conn, $sql);
 
 $data = [];

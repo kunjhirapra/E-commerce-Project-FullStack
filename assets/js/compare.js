@@ -175,6 +175,7 @@ async function renderCompareProducts() {
             .map((productArray) => {
               if (!productArray || !productArray[0]) return "";
               const product = productArray[0];
+              console.log(product);
               return `
                 <div class="col">
                   <div class="card h-100 shadow-sm compare-product-card">
