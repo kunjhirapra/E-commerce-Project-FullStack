@@ -76,7 +76,26 @@ Experience the live application:
 - Remove items from wishlist
 - Wishlist icon with item count
 
-#### **5. Checkout & Payment**
+#### **5. Product Comparison**
+
+- Compare up to 4 products side-by-side
+- Category-based comparison (only compare products from the same category)
+- Compare button with live product count
+- Visual comparison of:
+  - Product images
+  - Product names and descriptions
+  - Prices and discounts
+  - Stock availability
+  - Brand information
+  - Product specifications
+  - Colors and features
+- Remove individual products from comparison
+- Clear all comparisons at once
+- Persistent comparison list using local storage
+- Responsive comparison view with offcanvas panel
+- Add to cart directly from comparison view
+
+#### **6. Checkout & Payment**
 
 - Multi-step checkout process
 - Shipping address management
@@ -88,7 +107,7 @@ Experience the live application:
 - Real-time total calculation
 - Order confirmation page
 
-#### **6. Order Management**
+#### **7. Order Management**
 
 - View complete order history
 - Track order status (Pending, Processing, Shipped, Delivered)
@@ -105,7 +124,7 @@ Experience the live application:
   - Track return status
   - Refund amount calculation
 
-#### **7. User Dashboard**
+#### **8. User Dashboard**
 
 - Personal information overview
 - Quick access to:
@@ -114,7 +133,7 @@ Experience the live application:
   - Account Details
 - Statistics and recent activity
 
-#### **8. Additional Features**
+#### **9. Additional Features**
 
 - Responsive design (mobile, tablet, desktop)
 - Toast notifications for user actions
@@ -344,6 +363,7 @@ kunj-ecommerce-website/
 │   ├── 📁 js/                       # JavaScript Modules
 │   │   ├── Cart & Wishlist logic
 │   │   ├── Product display & filters
+│   │   ├── Product comparison (compare.js)
 │   │   ├── Form validation
 │   │   ├── Order & return management
 │   │   └── Utility functions
@@ -477,7 +497,27 @@ Admins can create flexible coupons with:
 - Usage limits
 - Auto-validation at checkout
 
-### **4. Order Return Workflow**
+### **4. Product Comparison System**
+
+Users can compare products with:
+
+- **Maximum 4 products** at a time for optimal comparison
+- **Category restriction** - Only products from the same category can be compared
+- **Real-time comparison view** using offcanvas panel
+- **Detailed comparison** including:
+  - Product images and names
+  - Prices and discount percentages
+  - Stock availability status
+  - Brand and category information
+  - Product descriptions
+  - Color and specifications
+- **Persistent storage** - Comparison list saved in local storage
+- **Easy management** - Remove individual products or clear all
+- **Visual indicators** - Active comparison icon on product cards
+- **Responsive design** - Optimized for mobile, tablet, and desktop
+- **Direct cart actions** - Add to cart from comparison view
+
+### **5. Order Return Workflow**
 
 Customers can:
 
@@ -489,7 +529,7 @@ Customers can:
 6. Track return status
 7. Receive refund confirmation
 
-### **5. Responsive Design**
+### **6. Responsive Design**
 
 - Mobile-first approach
 - Breakpoints for all device sizes
@@ -633,13 +673,25 @@ Customers can:
    - Apply coupon (optional)
    - Place order
 
-4. **Track Orders**
+4. **Compare Products**
+
+   - Browse products
+   - Click the compare icon (code-compare) on product cards
+   - Add up to 4 products from the same category
+   - Click "Compare Products" button at bottom of page
+   - View side-by-side comparison
+   - Add products to cart from comparison
+   - Remove products or clear all comparisons
+   - Close comparison panel when done
+
+5. **Track Orders**
 
    - Go to "My Orders"
    - Click order to view details
    - Track shipment status
 
-5. **Return Items**
+6. **Return Items**
+
    - Go to "My Orders"
    - Click "Return Order"
    - Select items and reason
