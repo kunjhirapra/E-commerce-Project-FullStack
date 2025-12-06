@@ -35,8 +35,11 @@ Experience the live application:
 #### **1. User Authentication & Profile Management**
 
 - Complete registration system with email and password
+- **🔐 Enterprise-grade security** with bcrypt/Argon2 password hashing
 - Secure login/logout functionality
-- Session management with auto-logout after inactivity
+- **Modern session management** with HTTP-only cookies and CSRF protection
+- Session management with auto-logout after inactivity (30 minutes)
+- **Automatic password migration** from legacy MD5 to secure hashes
 - User dashboard with profile management
 - Update personal details, addresses, and contact information
 - Profile picture upload and management
@@ -226,7 +229,50 @@ Experience the live application:
 
 ---
 
-## 🚀 Quick Start
+## � Security Features
+
+This e-commerce platform implements enterprise-grade security practices to protect user data and prevent common vulnerabilities:
+
+### **Password Security**
+
+- **Modern hashing algorithms**:
+  - Argon2id (preferred) - Winner of Password Hashing Competition
+  - Argon2i (fallback) - Memory-hard algorithm
+  - Bcrypt (fallback) - Industry-standard with cost factor 12
+- **Automatic salting** - Unique salt for each password
+- **Automatic password migration** - Legacy MD5 passwords automatically upgraded to secure hashes on next login
+- **Password rehashing** - Automatically upgrades to stronger algorithms when available
+
+### **Session Security**
+
+- **HTTP-only cookies** - Prevents JavaScript access to session cookies
+- **SameSite=Strict** - Prevents CSRF attacks via cross-site requests
+- **Session timeout** - Automatic logout after 30 minutes of inactivity
+- **Session regeneration** - New session IDs every 30 minutes
+- **User-Agent validation** - Detects session hijacking attempts
+- **IP address validation** - Additional session security layer
+
+### **Additional Security Measures**
+
+- **Security headers**:
+  - X-Frame-Options: DENY (prevents clickjacking)
+  - X-Content-Type-Options: nosniff (prevents MIME sniffing)
+  - X-XSS-Protection: 1; mode=block
+  - Referrer-Policy: strict-origin-when-cross-origin
+  - Permissions-Policy (restricts browser features)
+- **CSRF protection** - Token generation and validation ready
+- **Rate limiting** - Helper functions to prevent brute force attacks
+- **Input sanitization** - XSS and injection attack prevention
+
+### **Security Documentation**
+
+For detailed information about security implementation, migration guide, and best practices, see:
+
+- **[SECURITY_UPGRADE_GUIDE.md](SECURITY_UPGRADE_GUIDE.md)** - Comprehensive security documentation
+
+---
+
+## �🚀 Quick Start
 
 ### **Local Development**
 
@@ -342,21 +388,27 @@ kunj-ecommerce-website/
 
 ### **Backend**
 
-- **PHP 7.4+** - Server-side scripting
+- **PHP 7.4+** - Server-side scripting with modern features
 - **MySQL** - Relational database
 - **PDO/MySQLi** - Database connectivity with prepared statements
+
+### **Security**
+
+- **bcrypt/Argon2** - Modern password hashing (cost factor 12 / 64MB memory)
+- **Prepared statements** - SQL injection prevention
+- **Session security** - HTTP-only cookies, SameSite=Strict, 30-min timeout
+- **Security headers** - X-Frame-Options, CSP-ready, XSS protection
+- **CSRF protection** - Token-based validation (ready to implement)
+- **Rate limiting** - Brute force attack prevention
+- **Input sanitization** - XSS and injection protection
+- **Automatic password migration** - Legacy MD5 to modern hashes
 
 ### **Libraries & Plugins**
 
 - **jQuery Validation** - Form validation
 - **Bootstrap Bundle** - Bootstrap + Popper.js
 - **AJAX** - Asynchronous data loading
-
-### **Security Features**
-
-- Prepared statements (SQL injection prevention)
-- Password hashing
-- Session management
+- **Owl Carousel** - Product carousels and sliders
 - CSRF protection
 - Input validation and sanitization
 - XSS prevention with `htmlspecialchars()`
@@ -677,7 +729,7 @@ This project is open-source and available for educational purposes.
 
 **Kunj Developer**
 
-- Website: [kunjdeveloper.me](https://kunjdeveloper.me)
+- Portfolio Website: [kunjdeveloper.me](https://kunjdeveloper.me)
 - Live Demo: [projectstore.kunjdeveloper.me](https://projectstore.kunjdeveloper.me)
 
 ---
@@ -715,7 +767,7 @@ For issues, questions, or suggestions:
 
 ---
 
-**Made with ❤️ by Kunj Developer**
+**Made by Kunj Developer**
 │ └── ...
 └── assets/
 ├── api/ # API endpoints

@@ -1,13 +1,13 @@
 <?php
-  session_id("sessionadmin");
-  session_start();
-include '../conn.php'; 
+require_once __DIR__ . '/../includes/security.php';
+Security::init_secure_session('ADMIN_SESSION');
+include '../conn.php';
 
 if (!isset($_SESSION['admin_email'])) {
     header("Location: signin.php");
     exit();
 }
-if (isset($_SESSION['admin_last_signin_time']) && (time() - $_SESSION['admin_last_signin_time']) > 10000) {
+if (isset($_SESSION['admin_last_signin_time']) && (time() - $_SESSION['admin_last_signin_time']) > 1800) {
     header("Location:signout.php");
     exit();
 }

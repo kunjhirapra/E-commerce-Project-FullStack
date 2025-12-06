@@ -1,7 +1,7 @@
 <?php
 include '../../../conn.php';
-session_id("sessionadmin");
-session_start();
+require_once __DIR__ . '/../../../includes/security.php';
+Security::init_secure_session('ADMIN_SESSION');
 
 header('Content-Type: application/json');
 

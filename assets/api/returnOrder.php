@@ -1,7 +1,7 @@
 <?php 
 include "../../conn.php";
-session_id("sessionuser");
-session_start();
+require_once __DIR__ . '/../../includes/security.php';
+Security::init_secure_session('USER_SESSION');
 header('Content-Type: application/json');
 $response = array();
 $orderId = (int)$_POST['orderIdNo'];

@@ -1,6 +1,7 @@
-<?php include 'main-header.php';
-session_id("sessionuser");
-session_start();
+<?php 
+include 'main-header.php';
+require_once __DIR__ . '/includes/security.php';
+Security::init_secure_session('USER_SESSION');
 ?>
 <script>
 const IS_LOGGED_IN = <?= isset($_SESSION['email']) ? 'true' : 'false' ?>;
@@ -9,7 +10,7 @@ const IS_LOGGED_IN = <?= isset($_SESSION['email']) ? 'true' : 'false' ?>;
 if (isset($_SESSION['email'])) {
   $userEmail = $_SESSION['email'];
 }
-if (isset($_SESSION['last_signin_time']) && (time() - $_SESSION['last_signin_time']) > 10000) {
+if (isset($_SESSION['last_signin_time']) && (time() - $_SESSION['last_signin_time']) > 1800) {
   header("Location:signout.php");
   exit();
 }
