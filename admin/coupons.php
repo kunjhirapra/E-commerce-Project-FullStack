@@ -186,7 +186,8 @@ $stmt->close();
                   <div class="custom-select mx-auto">
                     <div class="select-box">
                       <!-- Hidden input to store selected values -->
-                      <input type="hidden" class="selected-values" id="applicable_category" name="applicable_category" />
+                      <input type="hidden" class="selected-values" id="applicable_category"
+                        name="applicable_category" />
 
                       <div class="selected-options">
                         <span class="placeholder">Select the tags</span>
@@ -268,6 +269,7 @@ $stmt->close();
 
 
 <?php include '../main-footer.php' ?>
+<script type="module" src="./assets/js/script.js"></script>
 <script type="module" defer>
 $(document).ready(function() {
   $.validator.addMethod("futureDate", function(value, element) {
@@ -345,14 +347,14 @@ $(document).ready(function() {
       let couponInput = $("#coupon_code");
       let lowerCoupon = couponInput.val().toLowerCase();
       couponInput.val(lowerCoupon);
-      
+
       // Validate that at least one category is selected
       const selectedCategories = $("#applicable_category").val();
       if (!selectedCategories || selectedCategories.trim() === "") {
         $(".tag-error-message").text("Please select at least one category.").show();
         return false;
       }
-      
+
       $("#couponFormSubmit").prop("disabled", true);
       $("#formError").text("");
 
@@ -368,7 +370,7 @@ $(document).ready(function() {
           if (response.success) {
             $("#formError").text("");
             form.reset();
-            
+
             // Reset the custom select dropdown
             const customSelect = document.querySelector(".custom-select");
             if (customSelect) {
@@ -377,7 +379,8 @@ $(document).ready(function() {
                 option.classList.remove("active");
               });
               customSelect.querySelector(".option.all-tags")?.classList.remove("active");
-              customSelect.querySelector(".selected-options").innerHTML = '<span class="placeholder">Select the tags</span>';
+              customSelect.querySelector(".selected-options").innerHTML =
+                '<span class="placeholder">Select the tags</span>';
               $("#applicable_category").val("");
             }
 
