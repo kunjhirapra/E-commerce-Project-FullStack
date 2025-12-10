@@ -320,8 +320,18 @@ $stmt->close();
 
                             <div class="mb-3 col-6">
                               <label for="category" class="form-label">Category*</label>
-                              <input type="text" id="category" name="category" class="form-control"
-                                placeholder="eg. mobiles">
+                              <select id="category" name="category" class="form-select" required>
+                                <option value="">-- Select Category --</option>
+                                <?php
+                                $sql = "SELECT id, name FROM categories WHERE name != 'all' ORDER BY name";
+                                $result = $conn->query($sql);
+                                if ($result && $result->num_rows > 0) {
+                                  while ($row = $result->fetch_assoc()) {
+                                    echo '<option value="' . htmlspecialchars($row["name"]) . '">' . htmlspecialchars(ucfirst($row["name"])) . '</option>';
+                                  }
+                                }
+                                ?>
+                              </select>
                             </div>
 
                             <!-- <div class="mb-3 col-6">
@@ -404,9 +414,9 @@ $stmt->close();
 </section>
 
 
-<script type="module" src="<?php echo $Base_Url; ?>/assets/js/uploadImg.js"></script>
-<script type="module" src="<?php echo $Base_Url; ?>/assets/js/adminFilterProducts.js"></script>
-<script defer type="module" src="<?php echo $Base_Url; ?>/assets/js/adminAddProduct.js"></script>
+<script type="module" src="<?php echo $Admin_Base_Url; ?>/assets/js/uploadImg.js"></script>
+<script type="module" src="<?php echo $Admin_Base_Url; ?>/assets/js/adminFilterProducts.js"></script>
+<script defer type="module" src="<?php echo $Admin_Base_Url; ?>/assets/js/adminAddProduct.js"></script>
 
 
 <?php include './main-footer.php' ?>

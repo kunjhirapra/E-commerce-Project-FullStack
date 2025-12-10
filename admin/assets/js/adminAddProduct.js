@@ -1,4 +1,4 @@
-import {clearImage} from "./uploadImg.js";
+import { clearImage } from "./uploadImg.js";
 
 $(document).ready(function () {
   $.validator.addMethod(

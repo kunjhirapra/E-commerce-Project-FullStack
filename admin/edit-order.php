@@ -157,5 +157,5 @@ echo $deliveryAddress;
     </div>
   </div>
 </section>
-<script type="module" src="<?php echo $Base_Url; ?>/assets/js/editOrderDetails.js"></script>
+<script type="module" src="<?php echo $Admin_Base_Url; ?>/assets/js/editOrderDetails.js"></script>
 <?php include '../main-footer.php' ?>
