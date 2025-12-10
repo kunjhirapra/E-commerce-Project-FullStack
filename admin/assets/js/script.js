@@ -86,6 +86,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
       customSelect.querySelector(".selected-options").innerHTML = tagsHtml;
+
+      // Clear error message when options are selected
+      const errorMessage = customSelect.querySelector(".tag-error-message");
+      if (errorMessage && (isAllSelected || selectedOptions.length > 0)) {
+        errorMessage.textContent = "";
+        errorMessage.style.display = "none";
+      }
     }
 
     customSelect.forEach(function (customSelect) {

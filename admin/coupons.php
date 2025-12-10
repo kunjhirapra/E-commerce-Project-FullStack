@@ -182,19 +182,14 @@ $stmt->close();
                 </div>
 
                 <div class="col-12 mb-5">
-                  <!-- <label for="applicable_category" class="form-label">Applicable Items</label> -->
+                  <label for="applicable_category" class="form-label">Applicable Categories *</label>
                   <div class="custom-select mx-auto">
                     <div class="select-box">
                       <!-- Hidden input to store selected values -->
-                      <input type="hidden" class="selected-values" id="applicable_category" name="applicable_category"
-                        name="tags" />
+                      <input type="hidden" class="selected-values" id="applicable_category" name="applicable_category" />
 
                       <div class="selected-options">
-                        <span class="tag">Black<span class="remove-tag">&times;</span></span>
-                        <span class="tag">Green<span class="remove-tag">&times;</span></span>
-                        <span class="tag">Navy<span class="remove-tag">&times;</span></span>
-                        <span class="tag">Orange<span class="remove-tag">&times;</span></span>
-                        <span class="tag">+5</span>
+                        <span class="placeholder">Select the tags</span>
                       </div>
                       <div class="arrow">
                         <i class="fa fa-angle-down"></i>
@@ -350,6 +345,14 @@ $(document).ready(function() {
       let couponInput = $("#coupon_code");
       let lowerCoupon = couponInput.val().toLowerCase();
       couponInput.val(lowerCoupon);
+      
+      // Validate that at least one category is selected
+      const selectedCategories = $("#applicable_category").val();
+      if (!selectedCategories || selectedCategories.trim() === "") {
+        $(".tag-error-message").text("Please select at least one category.").show();
+        return false;
+      }
+      
       $("#couponFormSubmit").prop("disabled", true);
       $("#formError").text("");
 
@@ -365,6 +368,18 @@ $(document).ready(function() {
           if (response.success) {
             $("#formError").text("");
             form.reset();
+            
+            // Reset the custom select dropdown
+            const customSelect = document.querySelector(".custom-select");
+            if (customSelect) {
+              const options = customSelect.querySelectorAll(".option.active");
+              options.forEach(function(option) {
+                option.classList.remove("active");
+              });
+              customSelect.querySelector(".option.all-tags")?.classList.remove("active");
+              customSelect.querySelector(".selected-options").innerHTML = '<span class="placeholder">Select the tags</span>';
+              $("#applicable_category").val("");
+            }
 
             let successModal = new bootstrap.Modal(document.getElementById('successModal'));
             successModal.show();
