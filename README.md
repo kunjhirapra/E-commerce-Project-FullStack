@@ -283,12 +283,6 @@ This e-commerce platform implements enterprise-grade security practices to prote
 - **Rate limiting** - Helper functions to prevent brute force attacks
 - **Input sanitization** - XSS and injection attack prevention
 
-### **Security Documentation**
-
-For detailed information about security implementation, migration guide, and best practices, see:
-
-- **[SECURITY_UPGRADE_GUIDE.md](SECURITY_UPGRADE_GUIDE.md)** - Comprehensive security documentation
-
 ---
 
 ## �🚀 Quick Start
@@ -299,7 +293,7 @@ For detailed information about security implementation, migration guide, and bes
 
    ```bash
    cd C:\xampp\htdocs
-   git clone <repository-url> kunj-ecommerce-website
+   git clone <repository-url> E-commerce-Project-FullStack
    ```
 
 2. **Import database**:
@@ -314,8 +308,8 @@ For detailed information about security implementation, migration guide, and bes
 
 4. **Access the site**:
 
-   - Customer Store: `http://localhost/kunj-ecommerce-website/`
-   - Admin Panel: `http://localhost/kunj-ecommerce-website/admin/`
+   - Customer Store: `http://localhost/E-commerce-Project-FullStack/`
+   - Admin Panel: `http://localhost/E-commerce-Project-FullStack/admin/`
 
 5. **Start shopping!** 🎉
 
@@ -328,7 +322,7 @@ For production deployment instructions, see [`DEPLOYMENT_CHECKLIST.md`](DEPLOYME
 ## 📁 Project Structure
 
 ```
-kunj-ecommerce-website/
+E-commerce-Project-FullStack/
 │
 ├── 📄 *.php                         # Core application pages
 │   ├── config.php & conn.php        # Configuration & database connection
@@ -594,17 +588,17 @@ Customers can:
 
    ```bash
    git clone <repository-url>
-   cd kunj-ecommerce-website
+   cd E-commerce-Project-FullStack
    ```
 
 2. **Move to web server directory**
 
    ```bash
    # For XAMPP
-   move kunj-ecommerce-website C:\xampp\htdocs\
+   move E-commerce-Project-FullStack C:\xampp\htdocs\
 
    # For WAMP
-   move kunj-ecommerce-website C:\wamp64\www\
+   move E-commerce-Project-FullStack C:\wamp64\www\
    ```
 
 3. **Create database**
@@ -641,8 +635,8 @@ Customers can:
 
 7. **Access the website**
 
-   - Customer: `http://localhost/kunj-ecommerce-website/`
-   - Admin: `http://localhost/kunj-ecommerce-website/admin/`
+   - Customer: `http://localhost/E-commerce-Project-FullStack/`
+   - Admin: `http://localhost/E-commerce-Project-FullStack/admin/`
 
 8. **Create test accounts or use demo credentials** (see top of README)
 

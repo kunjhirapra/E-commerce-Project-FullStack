@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($emailErr === "" && $passwordErr === "" && $userNameErr === "" && count($UploadErr) === 0) {
       $defaultRole = 'admin';
-      $roleStmt = $conn->prepare("SELECT id FROM roles WHERE name = ?");
+      $roleStmt = $conn->prepare("SELECT id FROM roles WHERE role = ?");
       $roleStmt->bind_param("s", $defaultRole);
       $roleStmt->execute();
       $roleResult = $roleStmt->get_result();
@@ -364,7 +364,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   font-size: 0.85rem;
   color: #666;
   border-top: 1px solid #f0f0f0;
-  display: none; /* Hidden as link moved to top-right */
+  display: none;
+  /* Hidden as link moved to top-right */
 }
 
 .auth-footer a {

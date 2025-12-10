@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-    $stmt = $conn->prepare("SELECT id FROM admin_sign_in WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id FROM user_sign_in WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
@@ -342,7 +342,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   font-size: 0.85rem;
   color: #666;
   border-top: 1px solid #f0f0f0;
-  display: none; /* Hidden as link moved to top-right */
+  display: none;
+  /* Hidden as link moved to top-right */
 }
 
 .auth-footer a {

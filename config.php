@@ -12,8 +12,8 @@ $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVE
 
 if ($isLocalhost) {
     // Local development environment
-    $Base_Url = $protocol . $_SERVER['SERVER_NAME'] . '/kunj-ecommerce-website';
-    $Admin_Base_Url = $protocol . $_SERVER['SERVER_NAME'] . '/kunj-ecommerce-website/admin';
+    $Base_Url = $protocol . $_SERVER['SERVER_NAME'] . '/E-commerce-Project-FullStack';
+    $Admin_Base_Url = $protocol . $_SERVER['SERVER_NAME'] . '/E-commerce-Project-FullStack/admin';
 } else {
     // Production server environment
     // Option 1: Site is in root directory (ACTIVE for projectstore.kunjdeveloper.me)
@@ -21,9 +21,9 @@ if ($isLocalhost) {
     $Admin_Base_Url = $protocol . $_SERVER['SERVER_NAME'] . '/admin';
     
     // Option 2: If the site is in a subdirectory (DISABLED)
-    // Modify 'kunj-ecommerce-website' to match your actual directory name on the server
-    // $Base_Url = $protocol . $_SERVER['SERVER_NAME'] . '/kunj-ecommerce-website';
-    // $Admin_Base_Url = $protocol . $_SERVER['SERVER_NAME'] . '/kunj-ecommerce-website/admin';
+    // Modify 'E-commerce-Project-FullStack' to match your actual directory name on the server
+    // $Base_Url = $protocol . $_SERVER['SERVER_NAME'] . '/E-commerce-Project-FullStack';
+    // $Admin_Base_Url = $protocol . $_SERVER['SERVER_NAME'] . '/E-commerce-Project-FullStack/admin';
     
     // Option 3: Custom domain/path - Manually specify your production URLs (DISABLED)
     // Uncomment and modify these lines if you need specific URLs
