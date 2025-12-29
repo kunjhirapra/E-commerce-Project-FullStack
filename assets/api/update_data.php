@@ -1,5 +1,5 @@
 <?php
-include '../../conn.php';
+require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../includes/security.php';
 Security::init_secure_session('USER_SESSION');
 
@@ -12,12 +12,12 @@ if (!isset($_SESSION['email'])) {
 }
 
 // Check for session timeout (optional logic)
-if (isset($_SESSION['last_signin_time']) && (time() - $_SESSION['last_signin_time']) > 10000) {
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > 10000) {
   http_response_code(401);
   echo json_encode(['error' => 'Session expired']);
   exit();
 }
-$_SESSION['last_signin_time'] = time();
+$_SESSION['last_activity'] = time();
 
 $userEmail = $_SESSION['email'];
 $result = mysqli_query($conn, "SELECT id FROM user_sign_in WHERE email = '$userEmail'");
@@ -43,9 +43,10 @@ $city = $_POST['city'] ?? '';
 $state = $_POST['state'] ?? '';
 $zipCode = $_POST['zipCode'] ?? '';
 $paymentType = $_POST['paymentType'] ?? '';
-$totalPrice = $_POST['totalPrice'];
+$totalPrice = isset($_POST['totalPrice']) ? floatval($_POST['totalPrice']) : 0.0;
 $couponCode = $_POST['couponCodeValue'] ?? '';
-$cartJson = $_POST['cart'];
+$couponCode = (isset($couponCode) && trim($couponCode) !== '') ? trim($couponCode) : null;
+$cartJson = $_POST['cart'] ?? '[]';
 
 if (trim($UserName) === '') {
   http_response_code(400);
@@ -70,10 +71,12 @@ if (count($cartProducts) === 0) {
 $sqlUserDetails = "INSERT INTO user_details (username, email, contact_number, delivery_address, billing_address, city, state_name, zip_code, payment_type)
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sqlUserDetails);
-$stmt->bind_param("ssissssss", $UserName, $userEmail, $contactNumber, $deliveryAddress, $billingAddress, $city, $state, $zipCode, $paymentType);
+// Bind contact as string to preserve formatting
+$stmt->bind_param("sssssssss", $UserName, $userEmail, $contactNumber, $deliveryAddress, $billingAddress, $city, $state, $zipCode, $paymentType);
 
 if (!$stmt->execute()) {
   http_response_code(500);
+  error_log('update_data.php: Failed to save user details: ' . $stmt->error);
   echo json_encode(['error' => 'Failed to save user details']);
   $stmt->close();
   $conn->close();
@@ -85,10 +88,12 @@ $stmt->close();
 $sqlOrder = "INSERT INTO orders (user_id, username_id, user_email, username, contact_number, delivery_address, billing_address, city, state_name, zip_code, payment_type, total_amount, coupon_code)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sqlOrder);
-$stmt->bind_param("iississssssds", $userId, $userDetailsId, $userEmail, $UserName, $contactNumber, $deliveryAddress, $billingAddress, $city, $state, $zipCode, $paymentType, $totalPrice, $couponCode);
+// 13 params: ii + 9s + d + s
+$stmt->bind_param("iisssssssssds", $userId, $userDetailsId, $userEmail, $UserName, $contactNumber, $deliveryAddress, $billingAddress, $city, $state, $zipCode, $paymentType, $totalPrice, $couponCode);
 
 if (!$stmt->execute()) {
   http_response_code(500);
+  error_log('update_data.php: Failed to save order: ' . $stmt->error);
   echo json_encode(['error' => 'Failed to save order']);
   $stmt->close();
   $conn->close();
@@ -109,6 +114,7 @@ foreach ($cartProducts as $item) {
   $stmtItem->bind_param("iiid", $orderId, $productId, $quantity, $price);
   if (!$stmtItem->execute()) {
     http_response_code(500);
+    error_log('update_data.php: Failed to save order item: ' . $stmtItem->error);
     echo json_encode(['error' => 'Failed to save order item']);
     $stmtItem->close();
     $conn->close();

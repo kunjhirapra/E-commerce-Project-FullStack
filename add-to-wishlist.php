@@ -3,6 +3,31 @@
 <script type="module" src="./assets/js/cartValue.js"></script>
 <div id="show-toast" class="toast-container position-fixed bottom-0 end-0" style="z-index: 1100;"></div>
 
+<?php if (!isset($_SESSION['email'])): ?>
+<!-- Not logged in - show sign in prompt -->
+<section class="addToCartElement" id="addToCartElem">
+  <div class="container">
+    <section class="row">
+      <div class="col-lg-12">
+        <div class="text-center py-5">
+          <i class="fa-regular fa-heart" style="font-size: 4rem; color: #ccc; margin-bottom: 1rem;"></i>
+          <h2 class="mb-3">Sign in to view your Wishlist</h2>
+          <p class="text-muted mb-4">Create a wishlist to save your favorite items and access them anytime.</p>
+          <div class="d-flex align-items-center justify-content-center gap-3">
+            <a href="./signin.php" class="add-to-cart-button fs-5">
+              <i class="fa-solid fa-right-to-bracket me-2"></i>Sign In
+            </a>
+            <a href="./signup.php" class="add-to-cart-button fs-5" style="background-color: #6c757d;">
+              <i class="fa-solid fa-user-plus me-2"></i>Create Account
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+<?php else: ?>
+<!-- Logged in - show wishlist -->
 <section class="addToCartElement" id="addToCartElem">
   <div class="container">
     <section class="row">
@@ -48,5 +73,6 @@
 const userId = <?php echo $_SESSION["userLogId"]; ?>
 </script>
 <script type="module" src="<?php echo $Base_Url; ?>/assets/js/showWishlist.js"></script>
+<?php endif; ?>
 <?php include 'footer.php';
 include 'main-footer.php';?>

@@ -84,7 +84,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           if (move_uploaded_file($tmpName, $destination)) {
             $Upload =  $uniqueFileName;
           } else {
-            $UploadErr[] = 'Failed to move uploaded file.';
+          if (!move_uploaded_file($tmpName, $destination)) {
+              $UploadErr[] = 'Failed to move uploaded file. Check folder permissions.';
+              $UploadErr[] = error_get_last()['message'] ?? '';
+          }
+          error_log("Upload failed to $destination");
+
           }
         }
       }else{

@@ -2,12 +2,30 @@ import { getWishlist } from "./getWishlist.js";
 import { showToast } from "./showToast.js";
 console.log(userId);
 let cartProducts = await getWishlist();
-if (cartProducts.length === 0 || !cartProducts) {
-  window.location.href = "product.php";
-}
+
 const productCartContainer = document.querySelector("#productCartContainer");
 const productCartTemplate = document.querySelector("#productCartTemplate");
 const addToCartElement = document.querySelector("#addToCartElem .row");
+
+// Function to show empty wishlist message
+function showEmptyWishlist() {
+  addToCartElement.innerHTML = "";
+  const emptyWishlist = document.createElement("div");
+  emptyWishlist.className = "col-12";
+  emptyWishlist.innerHTML = `
+    <div class="text-center py-5">
+      <i class="fa-regular fa-heart" style="font-size: 4rem; color: #ccc; margin-bottom: 1rem;"></i>
+      <h2 class="mb-3">Your Wishlist is Empty</h2>
+      <p class="text-muted mb-4">Browse our products and add your favorites to the wishlist!</p>
+      <div class="d-flex align-items-center justify-content-center">
+        <a href="./product.php" class="add-to-cart-button fs-5">
+          <i class="fa-solid fa-bag-shopping me-2"></i>Browse Products
+        </a>
+      </div>
+    </div>`;
+  addToCartElement.append(emptyWishlist);
+}
+
 const quantityChange = async (event, id, stock, price) => {
   const currentElem = document.querySelector(`#card-${id}`);
   const productQuantityElem = currentElem.querySelector(".product-quantity");
@@ -51,18 +69,11 @@ const quantityChange = async (event, id, stock, price) => {
 };
 async function showCartProduct() {
   let products = [];
-  const res = await fetch("/assets/api/api.php");
+  const res = await fetch("./assets/api/api.php");
   products = await res.json();
 
-  if (cartProducts.length === 0) {
-    addToCartElement.innerHTML = "";
-    const emptyCart = document.createElement("div");
-    emptyCart.innerHTML = `<h2 class="text-center">Cart is Empty Please select an item...</h2>
-    <div class="d-flex align-items-center justify-content-center mt-5">
-    <a href="./product.php" class="add-to-cart-button fs-5"><i class="fa-solid fa-cart-shopping me-2">
-            </i><span>Go to Shop</span></a>
-  </div>`;
-    addToCartElement.append(emptyCart);
+  if (!cartProducts || cartProducts.length === 0) {
+    showEmptyWishlist();
     return;
   }
 
@@ -123,11 +134,6 @@ async function showCartProduct() {
     if (MoveToCartBtn) {
       MoveToCartBtn.addEventListener("click", async () => {
         cartProducts = await getWishlist();
-        console.log(cartProducts);
-        console.log("id" + id);
-        if (!cartProducts || cartProducts.length === 1) {
-          window.location.href = "add-to-cart.php";
-        }
         let removeDiv = document.querySelector(`#card-${id}`);
         console.log(removeDiv);
         if (removeDiv) {
@@ -135,13 +141,21 @@ async function showCartProduct() {
           removeDiv.remove();
         }
         $.ajax({
-          url: "./assets/api/move_to_Cart.php",
+          url: "./assets/api/move_to_cart.php",
           method: "POST",
           contentType: "application/json",
           data: JSON.stringify({
             product_id: id,
           }),
-          success: function (data) {},
+          success: function (data) {
+            // Check if wishlist is now empty
+            cartProducts = cartProducts.filter(
+              (item) => Number(item.id) !== id
+            );
+            if (!cartProducts || cartProducts.length === 0) {
+              showEmptyWishlist();
+            }
+          },
         });
       });
     }
@@ -150,14 +164,14 @@ async function showCartProduct() {
       cloneRemoveBtn.addEventListener("click", async () => {
         cartProducts = await getWishlist();
         if (!cartProducts || cartProducts.length === 1) {
-          window.location.href = "product.php";
+          showEmptyWishlist();
         }
         let removeDiv = document.querySelector(`#card-${id}`);
-        console.log(removeDiv);
         if (removeDiv) {
           showToast("delete", id);
           removeDiv.remove();
         }
+        console.log(cartProducts);
         if (IS_LOGGED_IN) {
           $.ajax({
             url: "./assets/api/remove_wishlist_product.php",
@@ -166,10 +180,17 @@ async function showCartProduct() {
             data: JSON.stringify({
               product_id: id,
             }),
-            success: function (data) {},
+            success: function (data) {
+              // Check if wishlist is now empty
+              cartProducts = cartProducts.filter(
+                (item) => Number(item.id) !== id
+              );
+              console.log(cartProducts);
+              if (!cartProducts || cartProducts.length === 0) {
+                showEmptyWishlist();
+              }
+            },
           });
-        } else {
-          window.location.href = "signin.php";
         }
       });
     }
